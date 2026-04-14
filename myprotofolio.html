@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #6C63FF; --primary-dark: #5A52D5;
+      --dark: #0f0f1a; --card-bg: #1a1a2e;
+      --text: #e0e0e0; --muted: #9a9ab0; --white: #ffffff;
+      --whatsapp: #25D366; --whatsapp-dark: #1ebe5d;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--dark); color: var(--text); line-height: 1.7; }
+
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 999;
+      background: rgba(15,15,26,0.92); backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0 5%; display: flex; align-items: center; justify-content: space-between; height: 64px;
+    }
+    .logo { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.95rem; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--white); }
+    .hamburger { display: none; font-size: 1.4rem; cursor: pointer; color: var(--text); }
+
+    #hero {
+      min-height: 100vh; display: flex; align-items: center; padding: 80px 5% 60px;
+      background: radial-gradient(ellipse at 60% 40%, rgba(108,99,255,0.15) 0%, transparent 70%);
+    }
+    .hero-inner { max-width: 680px; }
+    .hero-tag {
+      display: inline-block; background: rgba(108,99,255,0.15); color: var(--primary);
+      border: 1px solid rgba(108,99,255,0.3); padding: 4px 14px; border-radius: 20px;
+      font-size: 0.85rem; font-weight: 500; margin-bottom: 1.2rem;
+    }
+    #hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 700; color: var(--white); line-height: 1.2; }
+    #hero h1 span { color: var(--primary); }
+    #hero p { font-size: 1.1rem; color: var(--muted); margin: 1.2rem 0 2rem; }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      padding: 12px 28px; border-radius: 8px; font-size: 0.95rem; font-weight: 500;
+      cursor: pointer; text-decoration: none; transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary { background: var(--primary); color: #fff; border: none; }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .btn-whatsapp { background: var(--whatsapp); color: #fff; border: none; }
+    .btn-whatsapp:hover { background: var(--whatsapp-dark); transform: translateY(-1px); }
+
+    section { padding: 80px 5%; }
+    .section-title { font-size: 2rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+    .section-line { width: 48px; height: 3px; background: var(--primary); border-radius: 2px; margin-bottom: 2.5rem; }
+
+    #about { background: var(--card-bg); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+    .about-avatar {
+      width: 200px; height: 200px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #a855f7);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem; color: white; margin: 0 auto;
+    }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; }
+    .about-info { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1.2rem; }
+    .about-info span { font-size: 0.9rem; color: var(--muted); }
+    .about-info span strong { color: var(--text); }
+
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem; }
+    .skill-card {
+      background: var(--card-bg); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px; padding: 1.2rem 1rem; text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .skill-card:hover { border-color: var(--primary); transform: translateY(-3px); }
+    .skill-card i { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .skill-card p { font-size: 0.85rem; color: var(--muted); }
+    .html-icon { color: #e34c26; } .css-icon { color: #264de4; } .js-icon { color: #f7df1e; }
+    .react-icon { color: #61dafb; } .git-icon { color: #f1502f; } .figma-icon { color: #a259ff; }
+
+    #projects { background: var(--card-bg); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .project-card {
+      background: var(--dark); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px; padding: 1.5rem; transition: border-color 0.2s, transform 0.2s;
+    }
+    .project-card:hover { border-color: var(--primary); transform: translateY(-4px); }
+    .project-icon {
+      width: 48px; height: 48px; border-radius: 10px; background: rgba(108,99,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; color: var(--primary); margin-bottom: 1rem;
+    }
+    .project-card h3 { color: var(--white); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .project-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.2rem; }
+    .project-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .tag { font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; background: rgba(108,99,255,0.15); color: var(--primary); border: 1px solid rgba(108,99,255,0.3); }
+    .project-links { margin-top: 1.2rem; display: flex; gap: 1rem; }
+    .project-links a { font-size: 0.85rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .project-links a:hover { color: var(--primary); }
+
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .contact-info p { color: var(--muted); margin-bottom: 2rem; }
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 0.8rem;
+      color: var(--muted); text-decoration: none; font-size: 0.95rem; transition: color 0.2s;
+    }
+    .contact-link i { width: 20px; text-align: center; color: var(--primary); }
+    .contact-link:hover { color: var(--white); }
+    .contact-link.wa i { color: var(--whatsapp); }
+    .contact-link.wa:hover { color: var(--whatsapp); }
+
+    .whatsapp-box {
+      background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.25);
+      border-radius: 12px; padding: 2rem;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 1rem; text-align: center;
+    }
+    .whatsapp-box i { font-size: 2.8rem; color: var(--whatsapp); }
+    .whatsapp-box h3 { color: var(--white); font-size: 1.1rem; }
+    .whatsapp-box p { color: var(--muted); font-size: 0.9rem; }
+
+    /* Floating Button */
+    .whatsapp-float {
+      position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+      background: var(--whatsapp); color: white;
+      width: 58px; height: 58px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.7rem; text-decoration: none;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+      transition: transform 0.2s, background 0.2s;
+      animation: pulse 2s infinite;
+    }
+    .whatsapp-float:hover { background: var(--whatsapp-dark); transform: scale(1.1); animation: none; }
+    .whatsapp-float .tooltip {
+      position: absolute; right: 70px;
+      background: #1a1a2e; color: var(--white); font-size: 0.8rem;
+      white-space: nowrap; padding: 6px 12px; border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.1);
+      opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    }
+    .whatsapp-float:hover .tooltip { opacity: 1; }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); }
+      70%  { box-shadow: 0 0 0 12px rgba(37,211,102,0); }
+      100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+    }
+
+    footer {
+      text-align: center; padding: 2rem 5%;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      color: var(--muted); font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: block; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; }
+      .hero-btns { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FLOATING WHATSAPP -->
+  <a class="whatsapp-float"
+     href="https://wa.me/919963809750?text=Hi!%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20connect."
+     target="_blank">
+    <i class="fab fa-whatsapp"></i>
+    <span class="tooltip">Chat on WhatsApp</span>
+  </a>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">&lt;Anusha/&gt;</div>
+    <ul class="nav-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-tag">👋 Available for Work</div>
+      <h1>Hi, I'm <span>Anusha</span><br/>Frontend Developer</h1>
+      <p>I build clean, responsive websites and love turning ideas into beautiful digital experiences.</p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-primary">View My Work</a>
+        <a href="https://wa.me/919963809750?text=Hi!%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20connect."
+           target="_blank" class="btn btn-whatsapp">
+          <i class="fab fa-whatsapp"></i> WhatsApp Me
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <h2 class="section-title">About Me</h2>
+    <div class="section-line"></div>
+    <div class="about-grid">
+      <div class="about-avatar">🧑‍💻</div>
+      <div class="about-text">
+        <p>I'm a passionate frontend developer from Mumbai, India. I enjoy crafting clean, user-friendly web experiences with attention to detail.</p>
+        <p>When I'm not coding, I love exploring new technologies, reading about design, and working on personal projects.</p>
+        <div class="about-info">
+          <span><strong>Location:</strong> Andhra pradesh, India</span>
+          <span><strong>Education:</strong> B.Tech Computer Science</span>
+          <span><strong>WhatsApp:</strong> +91 99638 09750</span>
+          <span><strong>Status:</strong> Open to opportunities</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <h2 class="section-title">Skills</h2>
+    <div class="section-line"></div>
+    <div class="skills-grid">
+      <div class="skill-card"><i class="fab fa-html5 html-icon"></i><p>HTML5</p></div>
+      <div class="skill-card"><i class="fab fa-css3-alt css-icon"></i><p>CSS3</p></div>
+      <div class="skill-card"><i class="fab fa-js js-icon"></i><p>JavaScript</p></div>
+      <div class="skill-card"><i class="fab fa-react react-icon"></i><p>React</p></div>
+      <div class="skill-card"><i class="fab fa-git-alt git-icon"></i><p>Git</p></div>
+      <div class="skill-card"><i class="fab fa-figma figma-icon"></i><p>Figma</p></div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <h2 class="section-title">Projects</h2>
+    <div class="section-line"></div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-icon"><i class="fas fa-store"></i></div>
+        <h3>E-Commerce UI</h3>
+        <p>A fully responsive product listing page with cart functionality built using HTML, CSS and JavaScript.</p>
+        <div class="project-tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
+        <div class="project-links">
+          <a href="#"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+          <a href="#"><i class="fab fa-github"></i> GitHub</a>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-icon"><i class="fas fa-cloud-sun"></i></div>
+        <h3>Weather App</h3>
+        <p>A weather application that fetches real-time data using the OpenWeather API and displays it beautifully.</p>
+        <div class="project-tags"><span class="tag">JavaScript</span><span class="tag">API</span><span class="tag">CSS</span></div>
+        <div class="project-links">
+          <a href="#"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+          <a href="#"><i class="fab fa-github"></i> GitHub</a>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-icon"><i class="fas fa-tasks"></i></div>
+        <h3>Task Manager</h3>
+        <p>A simple and elegant to-do list app with local storage support so tasks persist on page refresh.</p>
+        <div class="project-tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+        <div class="project-links">
+          <a href="#"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+          <a href="#"><i class="fab fa-github"></i> GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2 class="section-title">Contact</h2>
+    <div class="section-line"></div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p>Have a project in mind or just want to say hello? The easiest way to reach me is directly on WhatsApp — I usually reply within minutes!</p>
+        <div class="contact-links">
+          <a href="https://wa.me/919963809750?text=Hi!%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20connect."
+             target="_blank" class="contact-link wa">
+            <i class="fab fa-whatsapp"></i> +91 99638 09750
+          </a>
+          <a href="https://github.com/" class="contact-link" target="_blank"><i class="fab fa-github"></i>https://www.linkedin.com/in/anusha-thugu-20052632b</a>
+          <a href="https://linkedin.com/" class="contact-link" target="_blank"><i class="fab fa-linkedin"></i>https://github.com/Anusha2530</a>
+          <a href="#" class="contact-link"><i class="fas fa-map-marker-alt"></i> Andhra Pradesh, India</a>
+        </div>
+      </div>
+      <form id="contact-form" class="whatsapp-box">
+
+  <h3 style="color:white;">Send Me a Message</h3>
+
+  <input type="text" name="user_name" placeholder="Your Name" required 
+  style="padding:10px; width:100%; border-radius:6px; border:none; margin-bottom:10px; background:#0f0f1a; color:white;">
+
+  <input type="email" name="user_email" placeholder="Your Email" required 
+  style="padding:10px; width:100%; border-radius:6px; border:none; margin-bottom:10px; background:#0f0f1a; color:white;">
+
+  <textarea name="message" placeholder="Your Message" required 
+  style="padding:10px; width:100%; border-radius:6px; border:none; margin-bottom:10px; background:#0f0f1a; color:white;"></textarea>
+
+  <button type="submit" class="btn btn-primary">Send Message</button>
+
+  <p id="status" style="margin-top:10px; color:white;"></p>
+
+</form>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Made with ❤️ by <strong>Your Name</strong> &mdash; &copy; 2026</p>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      const nav = document.querySelector('.nav-links');
+      nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+      nav.style.flexDirection = 'column';
+      nav.style.position = 'absolute';
+      nav.style.top = '64px';
+      nav.style.right = '5%';
+      nav.style.background = '#1a1a2e';
+      nav.style.padding = '1rem 1.5rem';
+      nav.style.borderRadius = '10px';
+      nav.style.border = '1px solid rgba(255,255,255,0.1)';
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<script>
+document.getElementById("contact-form").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const name = document.querySelector('input[name="user_name"]').value;
+  const email = document.querySelector('input[name="user_email"]').value;
+  const message = document.querySelector('textarea[name="message"]').value;
+
+  const phoneNumber ="919963809750"; 
+
+  const text = `Name: ${name}%0AEmail: ${email}%0AMessage: ${message}`;
+
+  const whatsappURL = `https://wa.me/${phoneNumber}?text=${text}`;
+
+  window.open(whatsappURL, "_blank");
+});
+</script>
+</body>
+</html>
